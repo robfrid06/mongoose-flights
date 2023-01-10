@@ -1,0 +1,36 @@
+<%- include('../partials/html-head') %>
+<link rel="stylesheet" href="/stylesheets/flights/index.css" />
+<%- include('../partials/nav') %> 
+
+<main>
+  <h1><%= title %></h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Flight No.</th>
+        <th>Airline</th>
+        <th>Airport</th>
+        <th>Departure</th>
+        <th>View</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% flights.forEach(flight => { %>
+        <tr <%- Date.parse(flight.departs.toString()) < Date.now() ? `class="passed"` : ``%>>
+          <td><%= flight.flightNo %></td>
+          <td><%= flight.airline %></td>
+          <td><%= flight.airport %></td>
+          <td><%= flight.departs %></td>
+          <td><a href="/flights/<%= flight._id %> "><i class="fas fa-solid fa-eye"></i></a></td>
+          <td>
+            <form id="new-form" action="/flights/<%= flight._id %>?_method=DELETE" method="POST">
+              <button type="submit"><i class="fas fa-solid fa-delete-left fa-2x"></i></button>
+            </form></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</main>
+
+<%- include('../partials/footer') %> 

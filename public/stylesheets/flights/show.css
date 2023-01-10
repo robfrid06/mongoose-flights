@@ -1,0 +1,30 @@
+section {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(2, minmax(auto, 352px));
+  font-size: 20px;
+}
+
+section * {
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 20px;
+}
+
+section > a {
+  grid-column: span 2;
+  width: 160px;
+  margin-left: auto;
+  font-size: 22px;
+  background-color: rgb(239, 239, 239);
+  border: 2px solid rgb(118, 118, 118);
+  text-decoration: none;
+  text-align: center;
+  color: black;
+}
+
+div {
+  background-color: #b8c0c2;
+  border: 2px solid #424748;
+  min-height: 37px;
+}
