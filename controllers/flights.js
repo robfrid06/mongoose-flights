@@ -3,11 +3,10 @@ import { Flight } from '../models/flight.js';
 function index(req, res) {
   Flight.find({})
   .then(flights => {
-    console.log(Date.parse(flights[0].departs.toString()), Date.now());
     flights.sort((a, b) => a.departs - b.departs);
     res.render('flights/index', {
       title: 'All Flights',
-      flights: flights
+      flights
     });
   })
   .catch(err => {
@@ -17,8 +16,11 @@ function index(req, res) {
 };
 
 function newFlight(req, res) {
+  const newFlight = new Flight();
+  const defaultDeparts = newFlight.departs.toISOString().slice(0, 16);
   res.render('flights/new', {
-    title: 'Add Flight'
+    title: 'Add Flight',
+    defaultDeparts
   });
 };
 
@@ -27,7 +29,7 @@ function show(req, res) {
   .then(flight => {
     res.render('flights/show', {
       title: `Flight No. ${flight.flightNo}`,
-      flight: flight
+      flight
     });
   })
   .catch(err => {
@@ -41,7 +43,7 @@ function edit(req, res) {
   .then(flight => {
     res.render('flights/edit', {
       title: `Flight No. ${flight.flightNo}`,
-      flight: flight
+      flight
     });
   })
   .catch(err => {
@@ -51,14 +53,31 @@ function edit(req, res) {
 };
 
 function create(req, res) {
-  if (req.body.departs === '') req.body.departs = new Date(new Date().setFullYear(new Date().getFullYear() + 1));
   for (const key in req.body) {
-    if (req.body[key] === '') req.body[key] = undefined;
+    if (req.body[key] === '') delete req.body[key];
   };
   Flight.create(req.body)
   .then(flight => {
-    console.log(flight.departs.toISOString());
     res.redirect('/flights');
+  })
+  .catch(err => {
+    console.log(err);
+    res.redirect('/flights');
+  });
+};
+
+function createTicket(req, res) {
+  Flight.findById(req.params.id)
+  .then(flight => {
+    flight.tickets.push(req.body);
+    flight.save()
+    .then(() => {
+      res.redirect(`/flights/${flight._id}`);
+    })
+    .catch(err => {
+      console.log(err);
+      res.redirect('/flights');
+    });
   })
   .catch(err => {
     console.log(err);
@@ -88,6 +107,25 @@ function deleteFlight(req, res) {
   });
 };
 
+function deleteTicket(req,res) {
+  Flight.findById(req.params.id)
+  .then(flight => {
+    flight.tickets.id(req.params.ticketId).remove();
+    flight.save()
+    .then(() => {
+      res.redirect(`/flights/${flight._id}`);
+    })
+    .catch(err => {
+      console.log(err);
+      res.redirect('/flights');
+    });
+  })
+  .catch(err => {
+    console.log(err);
+    res.redirect('/flights');
+  });
+};
+
 
 export {
   index,
@@ -95,6 +133,8 @@ export {
   show,
   edit,
   create,
+  createTicket,
   update,
   deleteFlight as delete,
+  deleteTicket,
 }
