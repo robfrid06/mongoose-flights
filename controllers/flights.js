@@ -1,4 +1,5 @@
 import { Flight } from '../models/flight.js';
+import { Meal } from '../models/meal.js';
 
 function index(req, res) {
   Flight.find({})
@@ -26,16 +27,25 @@ function newFlight(req, res) {
 
 function show(req, res) {
   Flight.findById(req.params.id)
+  .populate('meals')
   .then(flight => {
-    res.render('flights/show', {
-      title: `Flight No. ${flight.flightNo}`,
-      flight
-    });
+    Meal.find({_id: {$nin: flight.meals}})
+    .then(meals => {
+      res.render('flights/show', {
+        title: `Flight No. ${flight.flightNo}`,
+        flight,
+        meals
+      });
+    })
+    .catch(err => {
+      console.log(err)
+      res.redirect('/flights/show')
+    })
   })
   .catch(err => {
     console.log(err)
     res.redirect('/flights')
-  })
+  });
 };
 
 function edit(req, res) {
@@ -110,6 +120,7 @@ function deleteFlight(req, res) {
 function deleteTicket(req,res) {
   Flight.findById(req.params.id)
   .then(flight => {
+    console.log(flight);
     flight.tickets.id(req.params.ticketId).remove();
     flight.save()
     .then(() => {
@@ -126,6 +137,43 @@ function deleteTicket(req,res) {
   });
 };
 
+function addMeal(req, res) {
+  Flight.findById(req.params.id)
+  .then(flight => {
+    flight.meals.push(req.body.mealId);
+    flight.save()
+    .then(() => {
+      res.redirect(`/flights/${ flight._id }`);
+    })
+    .catch(err => {
+      console.log(err);
+      res.redirect(`/flights/${ flight._id }`);
+    });
+  })
+  .catch(err => {
+    console.log(err);
+    res.redirect(`/flights/${ flight._id }`);
+  });
+};
+
+function removeMeal(req, res) {
+  Flight.findById(req.params.id)
+  .then(flight => {
+    flight.meals.remove({_id: req.params.mealId});
+    flight.save()
+    .then(() => {
+      res.redirect(`/flights/${flight._id}`);
+    })
+    .catch(err => {
+      console.log(err);
+      res.redirect('/flights');
+    });
+  })
+  .catch(err => {
+    console.log(err);
+    res.redirect('/flights');
+  });
+};
 
 export {
   index,
@@ -137,4 +185,6 @@ export {
   update,
   deleteFlight as delete,
   deleteTicket,
+  addMeal,
+  removeMeal,
 }

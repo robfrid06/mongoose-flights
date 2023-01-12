@@ -14,8 +14,8 @@ function defaultDeparts() {
 };
 
 const ticketSchema = new Schema({
-  seat: {type: String, match: /[A-F][1-9]\d?/},
-  price: {type: Number, min: 0},
+  seat: {type: String, match: /[A-F][1-9]\d?/, required: true},
+  price: {type: Number, min: 0, required: true},
 }, {
   timestamps: true
 });
@@ -26,6 +26,7 @@ const flightSchema = new Schema({
   flightNo: {type: Number, default: generateFlightNo},
   departs: {type: Date, default: defaultDeparts},
   tickets: [ticketSchema],
+  meals: [{type: Schema.Types.ObjectId, ref: 'Meal'}]
 }, {
   timestamps: true
 });

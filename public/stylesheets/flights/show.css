@@ -70,12 +70,31 @@ tr {
   cursor: pointer;
 }
 
+.meals-table tr {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 50%;
+  margin: 0 auto;
+}
+
 td input {
   width: 100%;
   padding: 5px;
   border-radius: 5px;
   font-size: 20px;
   text-align: center;
+}
+
+select {
+  width: 100%;
+  height: 100%;
+  font-size: 20px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.single-column, #no-meals-display {
+  grid-template-columns: 1fr;
 }
 
 i {

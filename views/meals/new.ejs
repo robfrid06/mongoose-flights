@@ -1,0 +1,36 @@
+<%- include('../partials/html-head') %>
+<link rel="stylesheet" href="/stylesheets/meals/new.css" />
+<%- include('../partials/nav') %> 
+
+<main>
+  <h1><%= title %></h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Date Added</th>
+      </tr>
+    </thead>
+    <tbody>
+      <form id="new-form" action="/meals" method="POST">
+        <tr>
+          <td><input type="text" name="name" autocomplete="off"></td>
+          <td><button type="submit">Add Meal</button></td>
+        </tr>
+      </form>
+      <% if (!meals.length) { %>
+        <tr>
+          <td>No Meals Added</td>
+        </tr>
+      <% } else { %>
+        <% meals.forEach(meal => { %>
+          <tr>
+            <td><%= meal.name %></td>
+            <td><%= meal.createdAt.toString().slice(0, 16) %></td>
+          </tr>
+        <% }) %>
+      <% } %>
+  </table>
+</main>
+
+<%- include('../partials/footer') %> 
