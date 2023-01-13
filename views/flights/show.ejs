@@ -27,7 +27,6 @@
           <th>Date Created</th>
           <th>Seat</th>
           <th>Price</th>
-          <th>Edit</th>
           <th>Delete</th>
         </tr>
       </thead>
@@ -42,7 +41,6 @@
               <td><%= ticket.createdAt.toString().slice(0, 16) %></td>
               <td><%= ticket.seat %></td>
               <td>$<%= ticket.price %></td>
-              <td><a href="/flights/<%= flight._id %> "><i class="fas fa-solid fa-pen-to-square"></i></i></a></td>
               <td>
                 <form id="new-form" action="/flights/<%= flight._id %>/tickets/<%= ticket._id %>?_method=DELETE" method="POST">
                   <button class="delete-button" type="submit"><i class="fas fa-solid fa-delete-left fa-2x"></i></button>
@@ -60,7 +58,7 @@
           <td><%= Date().toString().slice(0, 16) %></td>
           <td><input name="seat" required pattern="[A-F][1-9]\d?" placeholder="A1 - F99"></input></td>
           <td><input type="number" required name="price" min="0.00" step="0.01" placeholder="0.00"></input></td>
-          <td><button class="create-ticket-button" type="submit">Create Ticket</button></td>
+          <td><button class="create-ticket-button" type="submit">Create</button></td>
         </tr>
       </form>
     </tbody>

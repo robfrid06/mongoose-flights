@@ -49,16 +49,16 @@ table td {
 
 tr {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr ;
   grid-gap: 2px;
 }
 
 .create-ticket-table {
-  grid-template-columns: 2fr 1fr 1fr 2fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .create-ticket-button {
-  width: 160px;
+  width: 100%;
   font-size: 20px;
   padding: 5px;
   border-radius: 5px;

@@ -21,8 +21,8 @@ const ticketSchema = new Schema({
 });
 
 const flightSchema = new Schema({
-  airline: String,
-  airport: {type: String, default: 'DEN'},
+  airline: {type: String, enum: ["Delta", "Southwest", "United", "American", "Alaska", "Hawaiian", "JetBlue", "Frontier", "Allegiant", "Spirit"]},
+  airport: {type: String, default: 'DEN', enum: ["ATL", "LAX", "ORD", "DFW", "DEN", "JFK", "SFO", "SEA", "LAS", "MCO", "AUS", "SAN"]},
   flightNo: {type: Number, default: generateFlightNo},
   departs: {type: Date, default: defaultDeparts},
   tickets: [ticketSchema],
